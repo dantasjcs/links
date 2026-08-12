@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Júlio Dantas | Linktree</title>
+  <meta name="description" content="Mestre em Inovação em Tecnologias Educacionais, professor de Física e Engenheiro de Software.">
+  <meta property="og:title" content="Júlio Dantas | Agregador de Links">
+  <meta property="og:description" content="Mestre em Inovação em Tecnologias Educacionais, professor de Física e Engenheiro de Software.">
+  <meta property="og:image" content="foto_perfil.jpg">
+  <meta property="og:type" content="profile">
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap Icons CDN -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <style>
+    /* ==========================================================================
+       DESIGN SYSTEM & CSS VARIABLES (#BE9474 Background)
+       ========================================================================== */
+    :root {
+      --bg-color: #BE9474;
+      --bg-color-rgb: 190, 148, 116;
+      --bg-color-dark: #A1795C;
+      --desktop-outer-bg: #775A44;
+      
+      /* Botões em tom bem mais escuro que o background #BE9474 */
+      --btn-bg: #2B1B12;
+      --btn-bg-hover: #3E271B;
+      --btn-bg-active: #1F130B;
+      --btn-text: #FFFFFF;
+      --btn-subtext: #D6C2B3;
+      --btn-border: rgba(255, 255, 255, 0.08);
+      --btn-shadow: 0 10px 24px rgba(43, 27, 18, 0.3);
+      
+      --text-main: #0F0906;
+      --text-bio: #2E1F16;
+      --text-muted: #543D2E;
+      
+      --btn-radius: 18px;
+      --transition-smooth: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+      
+      --font-heading: 'Plus Jakarta Sans', -apple-system, sans-serif;
+      --font-body: 'Inter', -apple-system, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      width: 100%;
+      min-height: 100vh;
+      font-family: var(--font-body);
+      background-color: var(--desktop-outer-bg);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow-x: hidden;
+    }
+
+    /* Fundo dinâmico para o Desktop */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 50% 20%, rgba(255, 255, 255, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(0, 0, 0, 0.25) 0%, transparent 60%),
+        linear-gradient(135deg, var(--desktop-outer-bg) 0%, #5E4431 100%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       DESKTOP MOBILE CONTAINER VIEW (Centralizado e com Destaque)
+       ========================================================================== */
+    .viewport-wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 15px;
+    }
+
+    .mobile-frame {
+      width: 100%;
+      max-width: 440px; /* Mantém estritamente o formato de smartphone no desktop */
+      min-height: 860px;
+      background-color: var(--bg-color);
+      border-radius: 40px;
+      box-shadow: 
+        0 30px 70px -12px rgba(0, 0, 0, 0.45),
+        0 12px 24px -6px rgba(0, 0, 0, 0.25),
+        inset 0 0 0 2px rgba(255, 255, 255, 0.25);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition-smooth);
+    }
+
+    @media (max-width: 520px) {
+      .viewport-wrapper {
+        padding: 0;
+      }
+      .mobile-frame {
+        max-width: 100%;
+        min-height: 100vh;
+        border-radius: 0;
+        box-shadow: none;
+      }
+    }
+
+    /* Botões Flutuantes no Topo (Compartilhar / Copiar) */
+    .top-actions {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+    }
+
+    .action-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
+    }
+
+    .action-btn:hover {
+      background: rgba(0, 0, 0, 0.55);
+      transform: translateY(-2px) scale(1.05);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .action-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* ==========================================================================
+       HERO HEADER WITH GRADIENT TRANSITION (FORMATO PAGINA_EXEMPLO)
+       ========================================================================== */
+    .hero-header-container {
+      position: relative;
+      width: 100%;
+      height: 380px; /* Foto ocupa toda a parte superior */
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .hero-profile-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 25%;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .mobile-frame:hover .hero-profile-img {
+      transform: scale(1.03);
+    }
+
+    /* Dégradé de transição suave da imagem para a cor de fundo #BE9474 */
+    .hero-gradient-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(190, 148, 116, 0) 0%,
+        rgba(190, 148, 116, 0.05) 30%,
+        rgba(190, 148, 116, 0.45) 60%,
+        rgba(190, 148, 116, 0.85) 82%,
+        #BE9474 100%
+      );
+      pointer-events: none;
+    }
+
+    /* Máscara Radial Suave idêntica ao Linktree para fusão perfeita */
+    .hero-header-container {
+      mask-image: radial-gradient(110% 96% at 50% 0%, #000 50%, rgba(0,0,0,0.9) 65%, rgba(0,0,0,0.5) 82%, transparent 100%);
+      -webkit-mask-image: radial-gradient(110% 96% at 50% 0%, #000 50%, rgba(0,0,0,0.9) 65%, rgba(0,0,0,0.5) 82%, transparent 100%);
+    }
+
+    /* ==========================================================================
+       USER INFO (SOBREPOSTO E LOGO ABAIXO DA TRANSIÇÃO)
+       ========================================================================== */
+    .profile-info-section {
+      position: relative;
+      z-index: 10;
+      margin-top: -65px; /* Eleva levemente sobre o dégradé */
+      padding: 0 24px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .user-name-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+
+    .user-name {
+      font-family: var(--font-heading);
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--text-main);
+      letter-spacing: -0.6px;
+      line-height: 1.2;
+      text-shadow: 0 2px 10px rgba(190, 148, 116, 0.3);
+    }
+
+    .verified-icon {
+      color: #1DA1F2;
+      flex-shrink: 0;
+      display: inline-flex;
+    }
+
+    /* Descrição Solicitada */
+    .user-bio {
+      font-size: 14.5px;
+      line-height: 1.5;
+      color: var(--text-bio);
+      text-align: center;
+      max-width: 360px;
+      font-weight: 600;
+      margin-bottom: 24px;
+    }
+
+    /* ==========================================================================
+       LINK BUTTONS (Cor Mais Escura que o Background #BE9474)
+       ========================================================================== */
+    .links-container {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .link-card {
+      width: 100%;
+      background-color: var(--btn-bg);
+      color: var(--btn-text);
+      text-decoration: none;
+      padding: 18px 20px;
+      border-radius: var(--btn-radius);
+      border: 1px solid var(--btn-border);
+      box-shadow: var(--btn-shadow);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transition-smooth);
+      cursor: pointer;
+    }
+
+    /* Efeito de brilho ao passar o mouse */
+    .link-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.08),
+        transparent
+      );
+      transition: left 0.6s ease;
+    }
+
+    .link-card:hover::before {
+      left: 100%;
+    }
+
+    .link-card:hover {
+      background-color: var(--btn-bg-hover);
+      transform: translateY(-3px) scale(1.015);
+      box-shadow: 
+        0 16px 32px rgba(31, 19, 11, 0.45),
+        0 0 0 2px rgba(255, 255, 255, 0.15);
+    }
+
+    .link-card:active {
+      transform: translateY(-1px) scale(0.99);
+      background-color: var(--btn-bg-active);
+    }
+
+    .link-left-content {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .link-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #F3E5D8;
+      flex-shrink: 0;
+      transition: var(--transition-smooth);
+    }
+
+    .link-card:hover .link-icon-box {
+      background: rgba(255, 255, 255, 0.18);
+      transform: rotate(-4deg) scale(1.08);
+      color: #FFFFFF;
+    }
+
+    .link-text-group {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      min-width: 0;
+      text-align: left;
+    }
+
+    .badge-tag {
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      padding: 2px 7px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.12);
+      color: #E6D4C7;
+      width: fit-content;
+      margin-bottom: 2px;
+    }
+
+    .link-title {
+      font-family: var(--font-heading);
+      font-size: 15.5px;
+      font-weight: 700;
+      color: var(--btn-text);
+      letter-spacing: -0.2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .link-subtitle {
+      font-size: 12px;
+      color: var(--btn-subtext);
+      line-height: 1.35;
+      font-weight: 400;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .link-arrow {
+      width: 20px;
+      height: 20px;
+      color: var(--btn-subtext);
+      flex-shrink: 0;
+      margin-left: 10px;
+      transition: var(--transition-smooth);
+    }
+
+    .link-card:hover .link-arrow {
+      color: #FFFFFF;
+      transform: translateX(4px);
+    }
+
+    /* ==========================================================================
+       SOCIAL & FOOTER
+       ========================================================================== */
+    .social-row {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .social-icon-btn {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: rgba(43, 27, 18, 0.12);
+      color: var(--btn-bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: var(--transition-smooth);
+      border: 1px solid rgba(43, 27, 18, 0.15);
+    }
+
+    .social-icon-btn:hover {
+      background: var(--btn-bg);
+      color: #FFFFFF;
+      transform: translateY(-3px);
+      box-shadow: 0 8px 16px rgba(43, 27, 18, 0.25);
+    }
+
+    .footer {
+      padding: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.03);
+    }
+
+    .brand-link {
+      font-weight: 700;
+      color: var(--text-main);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      opacity: 0.85;
+      transition: var(--transition-smooth);
+    }
+
+    .brand-link:hover {
+      opacity: 1;
+    }
+
+    /* ==========================================================================
+       TOAST & MODAL
+       ========================================================================== */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--btn-bg);
+      color: #FFFFFF;
+      padding: 12px 24px;
+      border-radius: 30px;
+      font-size: 13px;
+      font-weight: 600;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      z-index: 999;
+      opacity: 0;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+      opacity: 1;
+    }
+
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition-smooth);
+      padding: 20px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      width: 100%;
+      max-width: 360px;
+      background: #F4ECE4;
+      border-radius: 28px;
+      padding: 28px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+      transform: scale(0.9);
+      transition: var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .modal-overlay.active .modal-card {
+      transform: scale(1);
+    }
+
+    .modal-title {
+      font-family: var(--font-heading);
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .qr-placeholder {
+      width: 160px;
+      height: 160px;
+      background: #FFFFFF;
+      padding: 12px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .close-modal-btn {
+      width: 100%;
+      background: var(--btn-bg);
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+    }
+
+    .close-modal-btn:hover {
+      background: var(--btn-bg-hover);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- DESKTOP CONTAINER: VERSÃO MOBILE NO CENTRO COM DESTAQUE -->
+  <div class="viewport-wrapper">
+    <main class="mobile-frame" id="mobileFrame">
+      
+      <!-- BOTÕES FLUTUANTES NO TOPO DA IMAGEM -->
+      <div class="top-actions">
+        <button class="action-btn" id="shareBtn" title="Compartilhar perfil" aria-label="Compartilhar Perfil">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M216,112v96a16,16,0,0,1-16,16H56a16,16,0,0,1-16-16V112A16,16,0,0,1,56,96H80a8,8,0,0,1,0,16H56v96H200V112H176a8,8,0,0,1,0-16h24A16,16,0,0,1,216,112ZM93.66,69.66,120,43.31V136a8,8,0,0,0,16,0V43.31l26.34,26.35a8,8,0,0,0,11.32-11.32l-40-40a8,8,0,0,0-11.32,0l-40,40A8,8,0,0,0,93.66,69.66Z"></path>
+          </svg>
+        </button>
+
+        <button class="action-btn" id="copyLinkBtn" title="Copiar link" aria-label="Copiar Link do Perfil">
+          <svg width="20" height="20" fill="currentColor" viewBox="0 0 256 256">
+            <path d="M137.54,186.36a8,8,0,0,1,0,11.31l-9.94,10A56,56,0,0,1,48.38,128.4l24.47-24.47a56,56,0,0,1,77.34-1.74,8,8,0,0,1-10.78,11.82,40,40,0,0,0-55.24,1.24L60.09,139.72a40,40,0,0,0,56.57,56.57l9.57-9.63A8,8,0,0,1,137.54,186.36Zm70.08-138a56,56,0,0,0-79.22,0l-9.57,9.63a8,8,0,0,0,11.31,11.31l9.57-9.63a40,40,0,0,1,56.57,56.57L171.42,140.7a40,40,0,0,1-55.24,1.24,8,8,0,1,0-10.78,11.82,56,56,0,0,0,77.34-1.74l24.89-24.89A56,56,0,0,0,207.62,48.38Z"></path>
+          </svg>
+        </button>
+      </div>
+
+      <!-- FOTO DE PERFIL OCUPANDO A PARTE SUPERIOR COM DÉGRADÉ EM TRANSIÇÃO -->
+      <div class="hero-header-container">
+        <img src="foto_perfil.jpg" alt="Júlio Dantas" class="hero-profile-img" onerror="this.src='https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=800&q=80'">
+        <div class="hero-gradient-overlay"></div>
+      </div>
+
+      <!-- CONTEÚDO PRINCIPAL (NOME, BIO E LINKS) -->
+      <div class="profile-info-section">
+        
+        <!-- NOME SEM O ÍCONE AZUL DE VERIFICADO -->
+        <div class="user-name-wrapper">
+          <h1 class="user-name">Júlio Dantas</h1>
+        </div>
+        
+        <!-- DESCRIÇÃO SOLICITADA -->
+        <p class="user-bio">
+          Mestre em Inovação em Tecnologias Educacionais, professor de Física e Engenheiro de Software.
+        </p>
+
+        <!-- BOTÕES EM TOM ESCURO CONSTRASTANTE COM O BACKGROUND #BE9474 -->
+        <div class="links-container">
+          
+          <!-- LINK 1: ARTIGOS PUBLICADOS -->
+          <a href="https://www.researchgate.net/profile/Julio-Dantas-2" target="_blank" rel="noopener noreferrer" class="link-card" id="link-artigos">
+            <div class="link-left-content">
+              <div class="link-icon-box">
+                <i class="bi bi-file-earmark-font" style="font-size: 22px;"></i>
+              </div>
+              <div class="link-text-group">
+                <span class="badge-tag">Pesquisa & Publicações</span>
+                <span class="link-title">Artigos publicados</span>
+                <span class="link-subtitle">ResearchGate • Trabalhos e artigos científicos</span>
+              </div>
+            </div>
+            <svg class="link-arrow" viewBox="0 0 256 256" fill="currentColor">
+              <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+            </svg>
+          </a>
+
+          <!-- LINK 2: GRADBIT -->
+          <a href="https://gradbit.com.br/" target="_blank" rel="noopener noreferrer" class="link-card" id="link-gradbit">
+            <div class="link-left-content">
+              <div class="link-icon-box">
+                <i class="bi bi-ui-checks-grid" style="font-size: 22px;"></i>
+              </div>
+              <div class="link-text-group">
+                <span class="badge-tag">Plataforma EdTech</span>
+                <span class="link-title">Gradbit</span>
+                <span class="link-subtitle">Software para criação e correção automatizada de provas e simulados</span>
+              </div>
+            </div>
+            <svg class="link-arrow" viewBox="0 0 256 256" fill="currentColor">
+              <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
+            </svg>
+          </a>
+
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <footer class="footer">
+        <span>&copy; <span id="year"></span> Todos os direitos reservados</span>
+      </footer>
+
+    </main>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast">
+    <svg width="18" height="18" fill="#4CAF50" viewBox="0 0 256 256">
+      <path d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm45.66,85.66-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.34a8,8,0,0,1,11.32,11.32Z"></path>
+    </svg>
+    <span id="toastMsg">Link copiado com sucesso!</span>
+  </div>
+
+  <!-- MODAL DE COMPARTILHAMENTO -->
+  <div class="modal-overlay" id="shareModal">
+    <div class="modal-card">
+      <h3 class="modal-title">Compartilhar Perfil</h3>
+      <div class="qr-placeholder" id="qrContainer">
+        <!-- SVG QR Code Icon -->
+        <svg width="130" height="130" viewBox="0 0 100 100" fill="#2B1B12">
+          <path d="M0 0h35v35H0zM10 10v15h15V10zM65 0h35v35H65zM75 10v15h15V10zM0 65h35v35H0zM10 75v15h15V75zM45 10h10v10H45zM45 45h10v10H45zM65 45h10v10H65zM85 45h15v10H85zM45 65h10v35H45zM65 75h20v10H65zM85 85h15v15H85z" />
+        </svg>
+      </div>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 20px;">Escaneie o QR Code para acessar o perfil de Júlio Dantas.</p>
+      <button class="close-modal-btn" onclick="closeShareModal()">Fechar</button>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT -->
+  <script>
+    // Atualizar ano dinamicamente no footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Função Toast
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      toastMsg.textContent = message;
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+
+    // Copiar Link
+    document.getElementById('copyLinkBtn').addEventListener('click', () => {
+      const pageUrl = window.location.href;
+      navigator.clipboard.writeText(pageUrl).then(() => {
+        showToast('Link do perfil copiado!');
+      }).catch(() => {
+        showToast('Perfil de Júlio Dantas pronto para compartilhar!');
+      });
+    });
+
+    // Compartilhar Modal
+    const shareModal = document.getElementById('shareModal');
+    document.getElementById('shareBtn').addEventListener('click', () => {
+      shareModal.classList.add('active');
+    });
+
+    function closeShareModal() {
+      shareModal.classList.remove('active');
+    }
+
+    shareModal.addEventListener('click', (e) => {
+      if (e.target === shareModal) {
+        closeShareModal();
+      }
+    });
+
+    // Animação de Entrada
+    document.addEventListener('DOMContentLoaded', () => {
+      const cards = document.querySelectorAll('.link-card');
+      cards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        setTimeout(() => {
+          card.style.transition = 'all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)';
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        }, 150 + index * 120);
+      });
+    });
+  </script>
+
+</body>
+</html>
